@@ -14,12 +14,12 @@ class AgentEdit extends Command
      */
     protected $signature = 'agent:edit
                             {agent_id}
-                            {--name= : Edit the agent name}
-                            {--type= : Change the agent type}
-                            {--hours= : How many hours should we keep the events?}
-                            {--config= : Change your agent JSON config}
-                            {--receives=* : Add agent ids from where this agents would receive events }
-                            {--sends=* : Add agent ids to where this agents would send events }
+                            {--name : Edit the agent name}
+                            {--type : Change the agent type}
+                            {--hours : How many hours should we keep the events?}
+                            {--config : Change your agent JSON config}
+                            {--receives : Add agent ids from where this agents would receive events }
+                            {--sends : Add agent ids to where this agents would send events }
                             ';
 
     /**
