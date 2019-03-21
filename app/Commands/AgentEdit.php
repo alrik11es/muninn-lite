@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Models\Agent;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
@@ -36,7 +37,13 @@ class AgentEdit extends Command
      */
     public function handle()
     {
-        //
+        $agent = Agent::find($this->argument('agent_id'));
+        if ($agent) {
+           if ($this->option('name')) {
+              $agent->name = $this->ask('Previous: '.$agent->name.' Set the agent name');
+           }
+           $agent->save();
+        }
     }
 
     /**

@@ -9,7 +9,11 @@ Muninn lite is a port of huginn just for terminal use only. No users no more ove
 
 ## Installation
 
-
 ## Installation on Raspberry PI
 
 To install on raspberry actually you have to compile PHP latest version.
+
+## Agent types
+
+* [Website scrapper](docs/website-scrapper.md)
+* Event formatter

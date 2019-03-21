@@ -9,3 +9,4 @@ yarn-error.log
 .env
 /database/database.sqlite
 muninn.sqlite
+builds

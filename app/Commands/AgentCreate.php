@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\AgentHelper;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -44,17 +45,9 @@ class AgentCreate extends Command
 
         $aname = $this->ask('Agent name');
 
-        $files = scandir(dirname(__FILE__).'/../Agents');
+        $ah = new AgentHelper();
 
-        $final = [];
-        foreach ($files as $file) {
-            if (preg_match('/\.php/', $file)) {
-                $file = str_replace('.php', '', $file);
-                $final[] = $file;
-            }
-        }
-
-        $atype = $this->choice('Agent type', $final);
+        $atype = $this->choice('Agent type', $ah->getAgentClasses());
         $ahours = $this->ask('How many time should we keep the events?', 0);
 
         $this->table(

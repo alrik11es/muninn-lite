@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Models\Agent;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
@@ -28,7 +29,14 @@ class AgentProcess extends Command
      */
     public function handle()
     {
-        //
+        $agent = Agent::find($this->argument('agent_id'));
+        if ($agent) {
+
+
+
+        } else {
+            $this->error('Agent `'.$this->argument('agent_id').'` does not exist');
+        }
     }
 
     /**

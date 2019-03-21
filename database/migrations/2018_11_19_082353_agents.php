@@ -21,7 +21,12 @@ class Agents extends Migration
             $table->integer('hours_keep_events');
             $table->boolean('propagate_immediately');
             $table->boolean('working');
-            $table->json('agent_config')->nullable();
+            $table->string('schedule')->nullable();
+            $table->string('config_location')->nullable();
+            $table->json('agent_buffer')->nullable();
+            $table->dateTime('last_check')->nullable();
+            $table->dateTime('last_event_out')->nullable();
+            $table->dateTime('last_event_in')->nullable();
             $table->timestamps();
         });
     }
