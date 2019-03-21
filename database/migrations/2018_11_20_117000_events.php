@@ -15,7 +15,9 @@ class Events extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->increments('id');
-            $table->json('log');
+            $table->integer('agent_id');
+            $table->json('payload');
+            $table->datetime('max_alive_date')->nullable();
             $table->timestamps();
         });
     }

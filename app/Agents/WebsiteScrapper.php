@@ -1,6 +1,9 @@
 <?php
 namespace App\Agents;
 
+use App\EventHelper;
+use App\Models\Event;
+use Carbon\Carbon;
 use function GuzzleHttp\Promise\queue;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -17,38 +20,22 @@ class WebsiteScrapper implements Agent
 
         $config = \Alr\ObjectDotNotation\Data::load($content);
 
-        $client = new \GuzzleHttp\Client();
-        $r = $client->get($config->get('url'));
-        $body = $r->getBody()->getContents();
+        $body = $this->getResponseBody($config->get('url'));
 
-        if($config->get('type') == 'html') {
-            $crawler = new Crawler($body);
-            foreach ($config->get('extract') as $elements) {
+        $result = $this->extractXml($config, $body);
 
-                foreach ($crawler->filter($elements->path) as $nodes) {
+        // Save buffer
+        // Compare buffer
+        // Send events
 
-                }
-                exit;
-//                $a = $crawler->filter($elements->);
-            }
+        $eh = new EventHelper();
+        foreach($result as $item) {
+            $eh->generateEvent($agent, $item);
         }
 
-
-//        $hrefs = [];
-//        $contents = [];
-//        foreach($a as $node) {
-//            $hrefs[] = $node->getAttribute('href');
-//            $contents[] = $node->textContent;
-//        }
-
-
-//        $client = new Client();
-//        $crawler = $client->request('GET', $d->get('url'));
-//
-//        $crawler->filter();
-
-        exit;
-
+        $agent->last_check = Carbon::now();
+        $agent->save();
+//        $this->info($agent->name .' processed '.count($result).' events');
     }
 
     public function extractJson()
@@ -56,13 +43,48 @@ class WebsiteScrapper implements Agent
         
     }
 
-    public function extractXml()
+    public function extractXml($config, $body)
+    {
+        $arr = [];
+        if($config->get('type') == 'html') {
+            $crawler = new Crawler($body);
+
+            foreach ($config->get('extract') as $key => $elements) {
+                foreach ($crawler->filter($elements->path) as $index => $nodes) {
+//                    $html = $nodes->ownerDocument->saveHTML($nodes);
+                    if (preg_match('/@/', $elements->value)){
+                        $attr = str_replace('@', '', $elements->value);
+                        $arr[$index][$key] = $nodes->getAttribute($attr);
+                    }
+                    if(preg_match('/string\(\.\)/', $elements->value)) {
+                        $arr[$index][$key] = $nodes->textContent;
+                    }
+                }
+            }
+        }
+
+        $arr_final = [];
+        foreach($arr as $el) {
+            $arr_final[] = (object) $el;
+        }
+
+        return $arr_final;
+    }
+
+    public function extractText()
     {
         
     }
 
-    public function a()
+    /**
+     * @param \Alr\ObjectDotNotation\Data $config
+     * @return string
+     */
+    public function getResponseBody($url): string
     {
-        
+        $client = new \GuzzleHttp\Client();
+        $r = $client->get($url);
+        $body = $r->getBody()->getContents();
+        return $body;
     }
 }

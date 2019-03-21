@@ -4,8 +4,11 @@
   "type": "html",
   "mode": "on_change",
   "extract": {
-    "body": { "path": "a",
+    "link": { "path": "a",
       "value": "@href"
+    },
+    "text": { "path": "a",
+      "value": "string(.)"
     }
   }
 }

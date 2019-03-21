@@ -11,6 +11,7 @@ class Agent extends Model
         'propagate_immediately',
         'working',
         'hours_keep_events',
+        'schedule',
         'config_location',
     ];
 }

@@ -8,21 +8,21 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use LaravelZero\Framework\Commands\Command;
 
-class AgentLs extends Command
+class AgentShow extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'agent:ls';
+    protected $signature = 'agent:show {agent_id}';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Lists agents';
+    protected $description = 'Show specified agent by id';
 
     /**
      * Execute the console command.

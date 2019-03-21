@@ -11,8 +11,8 @@
     },
     "authors": [
         {
-            "name": "Nuno Maduro",
-            "email": "enunomaduro@gmail.com"
+            "name": "Marcos Sigueros",
+            "email": "marcos@msfsoftware.com"
         }
     ],
     "require": {
@@ -51,5 +51,5 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "bin": ["muninn-lit"]
+    "bin": ["muninn"]
 }
