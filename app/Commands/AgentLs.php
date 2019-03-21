@@ -38,18 +38,35 @@ class AgentLs extends Command
 /_/  /_/\_,_/_//_/_/_//_/_//_/ /_/_/\__/\__/ 
                                              ');
             $this->info('This table shows muninn agents that you\'ve created previously.');
-            $headers = ['id', 'name', 'agent_class', 'hours_keep_events', 'propagate_immediately', 'working'];
-            $agents = Agent::get($headers)->toArray();
+            $headers = [
+                'id',
+                'name',
+                'agent_class',
+                'config_location',
+                'hours_keep_events',
+                'propagate_immediately',
+                'working'
+            ];
+            $agents = Agent::all($headers)->toArray();
 
             $agents = array_map(function ($item) {
+                $item = (object) $item;
                 $item->hours_keep_events = $item->hours_keep_events . 'h';
                 $item->working = $item->working == 1 ? 'yes' : 'no';
                 $item->propagate_immediately = $item->propagate_immediately == 1 ? 'yes' : 'no';
-                return (array)$item;
+                return (array) $item;
             }, $agents);
 
             $this->table(
-                ['#', 'Agent Name', 'Agent type', 'Event keeping time', 'Propagate inmmediately?', 'Working?'],
+                [
+                    '#',
+                    'Agent Name',
+                    'Agent type',
+                    'Agent config location',
+                    'Keeping T.',
+                    'Fast propagate',
+                    'Works?'
+                ],
                 $agents
             );
             $this->warn('Number of events: xxx');

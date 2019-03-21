@@ -1,10 +1,11 @@
 {
   "expected_update_period_in_days": 2,
-  "url": "http://www.reddit.com/r/all/comments/gilded.json",
-  "type": "json",
+  "url": "https://www.githubstatus.com/",
+  "type": "html",
   "mode": "on_change",
   "extract": {
-    "body": { "path": "$.data.children[*].data.body" },
-    "title": { "path": "$.data.children[*].data.link_title" }
+    "body": { "path": "a",
+      "value": "@href"
+    }
   }
 }

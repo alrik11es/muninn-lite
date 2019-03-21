@@ -31,9 +31,9 @@ class AgentProcess extends Command
     {
         $agent = Agent::find($this->argument('agent_id'));
         if ($agent) {
-
-
-
+            /** @var \App\Agents\Agent $ag */
+            $ag = new $agent->agent_class();
+            $ag->process($agent);
         } else {
             $this->error('Agent `'.$this->argument('agent_id').'` does not exist');
         }

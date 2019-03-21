@@ -3,6 +3,7 @@
 namespace App\Commands;
 
 use App\AgentHelper;
+use App\Models\Agent;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -35,10 +36,13 @@ class AgentCreate extends Command
         $config_json = $this->argument('config');
 
         if (file_exists($config_json)) {
-            $config_json = file_get_contents($config_json);
+            $file_contents = file_get_contents($config_json);
+        } else {
+            $this->error('A JSON file is needed as config for agent.');
+            return 1;
         }
 
-        if (!$this->isValidJson($config_json)) {
+        if (!$this->isValidJson($file_contents)) {
             $this->error('JSON data from input is not valid. Must be a file or stdin data.');
             return 1;
         }
@@ -56,16 +60,14 @@ class AgentCreate extends Command
         );
 
         if($this->confirm('Should we proceed with this agent?')) {
-            DB::table('agents')->insert(
-                [
-                    'name' => $aname,
-                    'agent_class' => $atype,
-                    'propagate_immediately' => true,
-                    'working' => false,
-                    'hours_keep_events' => $ahours,
-                    'agent_config' => $config_json,
-                ]
-            );
+            Agent::create( [
+                'name' => $aname,
+                'agent_class' => $atype,
+                'propagate_immediately' => true,
+                'working' => false,
+                'hours_keep_events' => $ahours,
+                'config_location' => $config_json,
+            ]);
             $this->info('Agent created successfully');
         }
     }
