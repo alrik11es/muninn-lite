@@ -10,4 +10,9 @@ class Event extends Model
         'agent_id',
         'max_alive_date',
     ];
+
+    public function agent()
+    {
+        return $this->belongsTo(Agent::class);
+    }
 }

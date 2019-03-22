@@ -20,7 +20,7 @@ class AgentProcess extends Command
      *
      * @var string
      */
-    protected $description = 'Process specified agent events';
+    protected $description = 'Process specified agent';
 
     /**
      * Execute the console command.
@@ -31,9 +31,11 @@ class AgentProcess extends Command
     {
         $agent = Agent::find($this->argument('agent_id'));
         if ($agent) {
+            $this->info('Processing agent: '.$agent->name.' ('.$agent->class.')');
             /** @var \App\Agents\Agent $ag */
             $ag = new $agent->agent_class();
             $ag->process($agent);
+            $this->info('DONE');
         } else {
             $this->error('Agent `'.$this->argument('agent_id').'` does not exist');
         }

@@ -29,11 +29,6 @@ class AgentRm extends Command
      */
     public function handle()
     {
-        $this->info('   __  ___          _             ___ __     
-  /  |/  /_ _____  (_)__  ___    / (_) /____ 
- / /|_/ / // / _ \/ / _ \/ _ \  / / / __/ -_)
-/_/  /_/\_,_/_//_/_/_//_/_//_/ /_/_/\__/\__/ 
-                                             ');
         $num = DB::table('agents')->where('id', $this->argument('agent_id'))->count();
         if ($num > 0) {
             DB::table('agents')->where('id', $this->argument('agent_id'))->delete();

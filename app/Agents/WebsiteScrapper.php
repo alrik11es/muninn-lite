@@ -1,13 +1,14 @@
 <?php
 namespace App\Agents;
 
+use App\AgentInterface;
 use App\EventHelper;
 use App\Models\Event;
 use Carbon\Carbon;
 use function GuzzleHttp\Promise\queue;
 use Symfony\Component\DomCrawler\Crawler;
 
-class WebsiteScrapper implements Agent
+class WebsiteScrapper implements AgentInterface
 {
     public $name = 'Website scrapper agent';
     public $description = 'The Website Agent scrapes a website, XML document, '.

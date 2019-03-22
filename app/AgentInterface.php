@@ -1,8 +1,8 @@
 <?php
-namespace App\Agents;
+namespace App;
 
 
-interface Agent
+interface AgentInterface
 {
     public function process(\App\Models\Agent $agent);
 }

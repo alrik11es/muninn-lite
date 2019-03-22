@@ -14,4 +14,19 @@ class Agent extends Model
         'schedule',
         'config_location',
     ];
+
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    public function senders()
+    {
+        return $this->hasMany(Receiver::class, 'sender_agent_id');
+    }
+
+    public function receivers()
+    {
+        return $this->hasMany(Receiver::class, 'receiver_agent_id');
+    }
 }

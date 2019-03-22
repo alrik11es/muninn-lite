@@ -3,6 +3,7 @@
 namespace App\Commands;
 
 use App\Models\Agent;
+use App\Models\Event;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,15 @@ class AgentLs extends Command
      * @var string
      */
     protected $description = 'Lists agents';
+
+    public function __construct()
+    {
+        parent::__construct();
+
+//        $this->setAliases(['agent:list']);
+
+    }
+
 
     /**
      * Execute the console command.
@@ -72,7 +82,7 @@ class AgentLs extends Command
                 ],
                 $agents
             );
-            $this->warn('Number of events: xxx');
+            $this->warn('Number of events: '.Event::count());
         } catch (QueryException $e) {
             $this->error('Have you installed muninn? try `$ muninn install`');
         }
