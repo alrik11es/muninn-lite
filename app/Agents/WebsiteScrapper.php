@@ -1,6 +1,7 @@
 <?php
 namespace App\Agents;
 
+use Alr\ObjectDotNotation\Data;
 use App\AgentInterface;
 use App\EventHelper;
 use App\Models\Event;
@@ -14,16 +15,11 @@ class WebsiteScrapper implements AgentInterface
     public $description = 'The Website Agent scrapes a website, XML document, '.
                           'or JSON feed and creates Events based on the results.';
 
-    public function process(\App\Models\Agent $agent)
+    public function process(Data $agent)
     {
-        $content = file_get_contents($agent->config_location);
-        $content = json_decode($content);
+        $body = $this->getResponseBody($agent->get('config.url'));
 
-        $config = \Alr\ObjectDotNotation\Data::load($content);
-
-        $body = $this->getResponseBody($config->get('url'));
-
-        $result = $this->extractXml($config, $body);
+        $result = $this->extractXml($agent, $body);
 
         // Save buffer
         // Compare buffer
@@ -34,8 +30,7 @@ class WebsiteScrapper implements AgentInterface
             $eh->generateEvent($agent, $item);
         }
 
-        $agent->last_check = Carbon::now();
-        $agent->save();
+//        $agent->save();
 //        $this->info($agent->name .' processed '.count($result).' events');
     }
 
@@ -47,10 +42,10 @@ class WebsiteScrapper implements AgentInterface
     public function extractXml($config, $body)
     {
         $arr = [];
-        if($config->get('type') == 'html') {
+        if($config->get('config.type') == 'html') {
             $crawler = new Crawler($body);
 
-            foreach ($config->get('extract') as $key => $elements) {
+            foreach ($config->get('config.extract') as $key => $elements) {
                 foreach ($crawler->filter($elements->path) as $index => $nodes) {
 //                    $html = $nodes->ownerDocument->saveHTML($nodes);
                     if (preg_match('/@/', $elements->value)){

@@ -2,26 +2,24 @@
 
 namespace App\Commands;
 
-use Alr\ObjectDotNotation\Data;
-use App\Models\Agent;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
-class AgentProcess extends Command
+class EventRm extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'agent:process {agent}';
+    protected $signature = 'event:rm';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Process specified agent';
+    protected $description = 'Removes all events';
 
     /**
      * Execute the console command.
@@ -30,18 +28,7 @@ class AgentProcess extends Command
      */
     public function handle()
     {
-        if (file_exists($this->argument('agent'))) {
-            $data = json_decode(file_get_contents($this->argument('agent')));
-            $data->filename = $this->argument('agent');
-            $d = Data::load($data);
-
-            $agent_type = '\\App\\Agents\\'.$d->get('type');
-            $ag = new $agent_type();
-            $ag->process($d);
-
-            file_get_contents(base_path('muninn-data/agents-status.json'));
-            $ag->last_check = Carbon::now();
-        }
+        array_map('unlink', glob( base_path('muninn-data/events/*.json')));
     }
 
     /**

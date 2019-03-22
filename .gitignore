@@ -10,3 +10,8 @@ yarn-error.log
 /database/database.sqlite
 muninn.sqlite
 builds
+muninn-data/agents/*
+muninn-data/events/*
+!muninn-data/events/.gitkeep
+!muninn-data/events/processing/.gitkeep
+!muninn-data/agents/.gitkeep
