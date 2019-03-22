@@ -20,7 +20,6 @@
         "ext-json": "*",
         "alrik11es/object-dot-notation": "^1.1",
         "guzzlehttp/guzzle": "^6.3",
-        "illuminate/database": "5.8.*",
         "laravel-zero/framework": "5.8.*",
         "symfony/css-selector": "^4.2",
         "symfony/dom-crawler": "^4.2",

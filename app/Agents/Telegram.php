@@ -14,6 +14,7 @@ class Telegram implements AgentInterface
 
     public function process(\App\Models\Agent $agent)
     {
+
         $loop = Factory::create();
         $tgLog = new TgLog(BOT_TOKEN, new HttpClientRequestHandler($loop));
         $sendMessage = new SendMessage();
