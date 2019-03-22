@@ -15,11 +15,13 @@ class WebsiteScrapper implements AgentInterface
     public $description = 'The Website Agent scrapes a website, XML document, '.
                           'or JSON feed and creates Events based on the results.';
 
-    public function process(Data $agent)
+    public function process($output, Data $agent)
     {
         $body = $this->getResponseBody($agent->get('config.url'));
 
         $result = $this->extractXml($agent, $body);
+
+        $output->info(json_encode($result));
 
         // Save buffer
         // Compare buffer
@@ -30,8 +32,7 @@ class WebsiteScrapper implements AgentInterface
             $eh->generateEvent($agent, $item);
         }
 
-//        $agent->save();
-//        $this->info($agent->name .' processed '.count($result).' events');
+        return count($result);
     }
 
     public function extractJson()

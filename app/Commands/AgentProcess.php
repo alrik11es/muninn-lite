@@ -4,6 +4,7 @@ namespace App\Commands;
 
 use Alr\ObjectDotNotation\Data;
 use App\Models\Agent;
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
@@ -37,10 +38,20 @@ class AgentProcess extends Command
 
             $agent_type = '\\App\\Agents\\'.$d->get('type');
             $ag = new $agent_type();
-            $ag->process($d);
+            $count = $ag->process($this, $d);
 
-            file_get_contents(base_path('muninn-data/agents-status.json'));
-            $ag->last_check = Carbon::now();
+            if ($count) {
+               $this->info('Agent processed '.$count.' events');
+            }
+
+            $path = base_path('muninn-data/agents-status.json');
+            if(file_exists($path)) {
+                $r = (array) json_decode(file_get_contents($path));
+            } else {
+                touch($path);
+            }
+            $r[$data->filename] = Carbon::now();
+            file_put_contents($path, json_encode($r));
         }
     }
 
