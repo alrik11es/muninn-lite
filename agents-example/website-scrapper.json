@@ -1,14 +1,21 @@
 {
-  "expected_update_period_in_days": 2,
-  "url": "https://www.githubstatus.com/",
-  "type": "html",
-  "mode": "on_change",
-  "extract": {
-    "link": { "path": "a",
-      "value": "@href"
-    },
-    "text": { "path": "a",
-      "value": "string(.)"
+  "type" : "Telegram",
+  "keep_events" : "2h",
+  "receivers": ["website-scrapper.json"],
+  "config" : {
+    "expected_update_period_in_days": 2,
+    "url": "https://www.githubstatus.com/",
+    "type": "html",
+    "mode": "on_change",
+    "extract": {
+      "link": {
+        "path": "a",
+        "value": "@href"
+      },
+      "text": {
+        "path": "a",
+        "value": "string(.)"
+      }
     }
   }
 }
